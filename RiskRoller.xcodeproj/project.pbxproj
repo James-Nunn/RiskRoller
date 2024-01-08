@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A17FA1C2B4BC84C00116EC3 /* RollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A17FA1B2B4BC84C00116EC3 /* RollView.swift */; };
+		1A17FA1E2B4BDD2900116EC3 /* OnSkakeExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A17FA1D2B4BDD2900116EC3 /* OnSkakeExtention.swift */; };
+		1A17FA202B4BE16800116EC3 /* Dice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A17FA1F2B4BE16800116EC3 /* Dice.swift */; };
 		98E14BEC2AC69062000ED946 /* RiskRollerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E14BEB2AC69062000ED946 /* RiskRollerApp.swift */; };
 		98E14BEE2AC69062000ED946 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E14BED2AC69062000ED946 /* ContentView.swift */; };
 		98E14BF02AC69065000ED946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98E14BEF2AC69065000ED946 /* Assets.xcassets */; };
@@ -14,6 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A17FA1B2B4BC84C00116EC3 /* RollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollView.swift; sourceTree = "<group>"; };
+		1A17FA1D2B4BDD2900116EC3 /* OnSkakeExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnSkakeExtention.swift; sourceTree = "<group>"; };
+		1A17FA1F2B4BE16800116EC3 /* Dice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dice.swift; sourceTree = "<group>"; };
+		1ABDE09B2B4BF8160022B002 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		98E14BE82AC69062000ED946 /* RiskRoller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RiskRoller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E14BEB2AC69062000ED946 /* RiskRollerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskRollerApp.swift; sourceTree = "<group>"; };
 		98E14BED2AC69062000ED946 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +42,8 @@
 		98E14BDF2AC69062000ED946 = {
 			isa = PBXGroup;
 			children = (
+				1ABDE09B2B4BF8160022B002 /* README.md */,
+				1A17FA1F2B4BE16800116EC3 /* Dice.swift */,
 				98E14BEA2AC69062000ED946 /* RiskRoller */,
 				98E14BE92AC69062000ED946 /* Products */,
 			);
@@ -51,6 +60,8 @@
 		98E14BEA2AC69062000ED946 /* RiskRoller */ = {
 			isa = PBXGroup;
 			children = (
+				1A17FA1D2B4BDD2900116EC3 /* OnSkakeExtention.swift */,
+				1A17FA1B2B4BC84C00116EC3 /* RollView.swift */,
 				98E14BEB2AC69062000ED946 /* RiskRollerApp.swift */,
 				98E14BED2AC69062000ED946 /* ContentView.swift */,
 				98E14BEF2AC69065000ED946 /* Assets.xcassets */,
@@ -137,8 +148,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A17FA1C2B4BC84C00116EC3 /* RollView.swift in Sources */,
 				98E14BEE2AC69062000ED946 /* ContentView.swift in Sources */,
+				1A17FA202B4BE16800116EC3 /* Dice.swift in Sources */,
 				98E14BEC2AC69062000ED946 /* RiskRollerApp.swift in Sources */,
+				1A17FA1E2B4BDD2900116EC3 /* OnSkakeExtention.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
