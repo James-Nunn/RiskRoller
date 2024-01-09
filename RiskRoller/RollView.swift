@@ -37,7 +37,9 @@ struct RollView: View {
                         Dice(num: a1, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.2))
                         Dice(num: a2, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.3))
                     }
-                }.offset(x: redDragDistance.width, y: redDragDistance.height)
+                }
+                .font(.system(size: 100))
+                .offset(x: redDragDistance.width, y: redDragDistance.height)
                     .gesture(
                         DragGesture()
                             .onChanged { gesture in
@@ -68,6 +70,7 @@ struct RollView: View {
                     Dice(num: d1, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.2))
                     Dice(num: d2, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.3))
                 }
+                .font(.system(size: 100))
                 .offset(x: blueDragDistance.width, y: blueDragDistance.height)
                 .gesture(
                     DragGesture()

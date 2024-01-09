@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+struct RollLog {
+    var id = UUID()
+    var attackerTroops: Int
+    var defenderTroops: Int
+    var attackerRoll: [Int]
+    var defenderRoll: [Int]
+    var attackerLost: Int
+    var defenderLost: Int
+}
 
 struct ContentView:View {
     
@@ -17,6 +26,9 @@ struct ContentView:View {
     @State var rolling = false
     
     @State var winner: String?
+    @State var log: [RollLog] = []
+    @State var shownTotal = false
+    
     
     var body: some View{
         NavigationStack{
@@ -54,6 +66,7 @@ struct ContentView:View {
                         rolling = true
                         ComputeRoll()
                     }.buttonStyle(.borderedProminent)
+                        .disabled(attackerTroops == 0 || defenderTroops == 0)
                     Spacer()
                 }
                 if winner != nil {
@@ -83,13 +96,58 @@ struct ContentView:View {
                     if winner == "Defender" {
                         Text("* Attacker still has 1 troop left")
                     }
-                    
                     Button("New Attack"){
                         rolling = false
                         attackerTroops = 0
                         defenderTroops = 0
                         winner = nil
+                        shownTotal = false
                     }.buttonStyle(.borderedProminent)
+                    Spacer()
+                    VStack{
+                        Text("Rolls:")
+                            .bold()
+                        List{
+                            ForEach(Array(log.enumerated()), id: \.0){ index, l in
+                                if !shownTotal {
+                                    Text("Attacker had \(l.attackerTroops)")
+                                    Text("Defender had \(l.defenderTroops)")
+                                        .onAppear{
+                                            shownTotal = true
+                                        }
+                                }
+                                VStack{
+                                    HStack{
+                                        Text("Roll \(index + 1): ")
+                                        Spacer()
+                                        VStack{
+                                            HStack{
+                                                Dice(num: l.attackerRoll[0], colour: Color.red)
+                                                if l.attackerRoll.count >= 2 {
+                                                    Dice(num: l.attackerRoll[1], colour: Color.red)
+                                                    if l.attackerRoll.count >= 3 {
+                                                        Dice(num: l.attackerRoll[2], colour: Color.red)
+                                                    }
+                                                }
+                                            }
+                                            .font(.system(size: 20))
+                                            HStack{
+                                                Dice(num: l.defenderRoll[0], colour: Color.blue)
+                                                if l.defenderRoll.count == 2 {
+                                                    Dice(num: l.defenderRoll[1], colour: Color.blue)
+                                                }
+                                            }
+                                            .font(.system(size: 20))
+                                        }
+                                    }
+                                    HStack{
+                                        Text("Attacker Lost \(l.attackerLost) And ")
+                                        Text("Defender Lost \(l.defenderLost)")
+                                    }
+                                }
+                            }
+                        }
+                    }.padding(.top)
                     Spacer()
                 }
             }
@@ -107,10 +165,13 @@ struct ContentView:View {
     }
                                  
     func ComputeRoll() {
+        let defenderStart = defenderTroops
+        let attackerStart = attackerTroops
         
         while winner == nil  {
             let aRoll = attackerRoll()
             let dRoll = defenderRoll()
+            
             if dRoll[0] >= aRoll[0]{
                 attackerTroops -= 1
             } else {
@@ -125,6 +186,10 @@ struct ContentView:View {
                 }
             }
             
+            let newLog = RollLog(attackerTroops: attackerStart, defenderTroops: defenderStart, attackerRoll: aRoll, defenderRoll: dRoll, attackerLost: (attackerStart - attackerTroops), defenderLost: (defenderStart - defenderTroops))
+            
+            log.append(newLog)
+
             if defenderTroops <= 0 {
                 winner = "Attacker"
             } else if attackerTroops <= 1{

@@ -14,7 +14,6 @@ struct Dice:View{
     
     var body: some View{
         Image(systemName: "die.face.\(num).fill")
-            .font(.system(size: 100))
             .foregroundStyle(colour)
     }
 }

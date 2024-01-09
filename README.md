@@ -9,9 +9,6 @@ Users can:
 - Compute Dice rolls and deaths at the push of a button
 - Roll digital dice with drag or shake feature
 - View all dice rolls and computation log (coming soon) 
-
-Coming Soon: 
 - Dice roll and death log
-- Input handling for troop count
 
 Big thanks to https://gist.github.com/ralfebert for the onShake extension

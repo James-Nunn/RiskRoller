@@ -43,7 +43,6 @@
 			isa = PBXGroup;
 			children = (
 				1ABDE09B2B4BF8160022B002 /* README.md */,
-				1A17FA1F2B4BE16800116EC3 /* Dice.swift */,
 				98E14BEA2AC69062000ED946 /* RiskRoller */,
 				98E14BE92AC69062000ED946 /* Products */,
 			);
@@ -60,6 +59,7 @@
 		98E14BEA2AC69062000ED946 /* RiskRoller */ = {
 			isa = PBXGroup;
 			children = (
+				1A17FA1F2B4BE16800116EC3 /* Dice.swift */,
 				1A17FA1D2B4BDD2900116EC3 /* OnSkakeExtention.swift */,
 				1A17FA1B2B4BC84C00116EC3 /* RollView.swift */,
 				98E14BEB2AC69062000ED946 /* RiskRollerApp.swift */,
