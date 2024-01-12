@@ -27,19 +27,22 @@ struct RollView: View {
     @State var title = "Attacker's Roll"
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                Text("Shake or Swipe to Roll").font(.title3)
-                Spacer()
+        Image("Oldpaper")
+            .resizable()
+            .ignoresSafeArea()
+            .overlay{
                 VStack{
-                    Dice(num: a3, colour: Color.red).rotationEffect(.degrees(attackerDegrees))
-                    HStack{
-                        Dice(num: a1, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.2))
-                        Dice(num: a2, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.3))
+                    Text(title).font(.largeTitle)
+                    Spacer()
+                    VStack{
+                        Dice(num: a3, colour: Color.red).rotationEffect(.degrees(attackerDegrees))
+                        HStack{
+                            Dice(num: a1, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.2))
+                            Dice(num: a2, colour: Color.red).rotationEffect(.degrees(attackerDegrees * 0.3))
+                        }
                     }
-                }
-                .font(.system(size: 100))
-                .offset(x: redDragDistance.width, y: redDragDistance.height)
+                    .font(.system(size: 100))
+                    .offset(x: redDragDistance.width, y: redDragDistance.height)
                     .gesture(
                         DragGesture()
                             .onChanged { gesture in
@@ -63,40 +66,49 @@ struct RollView: View {
                                 }
                             }
                     )
-                
-                Spacer()
-                
-                HStack{
-                    Dice(num: d1, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.2))
-                    Dice(num: d2, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.3))
-                }
-                .font(.system(size: 100))
-                .offset(x: blueDragDistance.width, y: blueDragDistance.height)
-                .gesture(
-                    DragGesture()
-                        .onChanged { gesture in
-                            if attackerRolled{
-                                blueDragDistance = gesture.translation
-                                defenderDegrees = gesture.velocity.animatableData.magnitudeSquared * 0.2
-                                d1 = Int.random(in: 1...6)
-                                d2 = Int.random(in: 1...6)
-                            }
-                        }
                     
-                        .onEnded { gesture in
-                            withAnimation(.spring(duration: 1.5, bounce: 0.2)) {
-                                d1 = Int.random(in: 1...6)
-                                d2 = Int.random(in: 1...6)
-                                blueDragDistance = CGSize.zero
-                            } completion: {
-                                dismiss()
+                    Spacer()
+                    
+                    HStack{
+                        Dice(num: d1, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.2))
+                        Dice(num: d2, colour: Color.blue).rotationEffect(.degrees(defenderDegrees * 0.3))
+                    }
+                    .font(.system(size: 100))
+                    .offset(x: blueDragDistance.width, y: blueDragDistance.height)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                if attackerRolled{
+                                    blueDragDistance = gesture.translation
+                                    defenderDegrees = gesture.velocity.animatableData.magnitudeSquared * 0.2
+                                    d1 = Int.random(in: 1...6)
+                                    d2 = Int.random(in: 1...6)
+                                }
                             }
-                        }
-                )
-                
-                Spacer()
-            }.navigationTitle(title)
-        }.onShake{
+                        
+                            .onEnded { gesture in
+                                withAnimation(.spring(duration: 1.5, bounce: 0.2)) {
+                                    d1 = Int.random(in: 1...6)
+                                    d2 = Int.random(in: 1...6)
+                                    blueDragDistance = CGSize.zero
+                                } completion: {
+                                    dismiss()
+                                }
+                            }
+                    )
+                    
+                    Spacer()
+                    HStack{
+                        // Added spacers to push background overlay for contrast
+                        Spacer()
+                        Text("Shake or Swipe to Roll").font(.title2)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .background(Color(red: 1, green: 1, blue: 1, opacity: 0.4))
+            }
+        .onShake{
             if !attackerRolled {
                 withAnimation(.bouncy(duration: 1, extraBounce: 0.2)){
                     redDragDistance = CGSize(width: 66, height: -220)
@@ -115,7 +127,7 @@ struct RollView: View {
                     defenderDegrees = Double.random(in: 0...360)
                     d1 = Int.random(in: 1...6)
                     d2 = Int.random(in: 1...6)
-
+                    
                 } completion: {
                     blueDragDistance = CGSize.zero
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

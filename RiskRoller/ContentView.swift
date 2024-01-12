@@ -30,127 +30,135 @@ struct ContentView:View {
     
     var body: some View{
         NavigationStack{
-            Group{
-                if winner == nil {
+            Image("Oldpaper")
+                .resizable()
+                .ignoresSafeArea()
+                .overlay {
                     VStack{
-                        Text("Troop Count:")
-                            .bold()
-                        HStack{
-                            Spacer()
+                        if winner == nil {
                             VStack{
-                                Text("Attacker")
-                                TextField("Troop Count", value: $attackerTroops, format: .number, prompt: Text("9"))
-                                    .font(.system(size: 40))
+                                Text("Troop Count:")
                                     .bold()
-                                    .focused($isInputActive)
-                                    .keyboardType(.numberPad)
-                            }
-                            .foregroundStyle(.red)
-                            Spacer()
-                            VStack{
-                                Text("Defender")
-                                TextField("Troop Count", value: $defenderTroops, format: .number, prompt: Text("4"))
-                                    .font(.system(size: 40))
-                                    .bold()
-                                    .focused($isInputActive)
-                                    .keyboardType(.numberPad)
-                            }
-                            .foregroundStyle(.blue)
-                            Spacer()
-                        }
-                        .multilineTextAlignment(.center)
-                    }
-                    Button("Roll"){
-                        rolling = true
-                        ComputeRoll()
-                    }.buttonStyle(.borderedProminent)
-                        .disabled(attackerTroops == 0 || defenderTroops == 0)
-                    Spacer()
-                }
-                if winner != nil {
-                    VStack{
-                        Text("Results:")
-                            .bold()
-                        HStack{
-                            Spacer()
-                            VStack{
-                                Text("Winner")
-                                Text(winner ?? "Undecided")
-                                    .font(.system(size: 40))
-                                    .bold()
-                            }
-                            Spacer()
-                            VStack{
-                                Text("Troops Left")
-                                Text("\(winner == "Attacker" ? attackerTroops : defenderTroops)")
-                                    .font(.system(size: 40))
-                                    .bold()
-                            }
-                            Spacer()
-                        }
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(textColor(p: winner ?? "Attacker"))
-                    }
-                    if winner == "Defender" {
-                        Text("* Attacker still has 1 troop left")
-                    }
-                    Button("New Attack"){
-                        rolling = false
-                        attackerTroops = 0
-                        defenderTroops = 0
-                        winner = nil
-                        shownTotal = false
-                    }.buttonStyle(.borderedProminent)
-                    Spacer()
-                    VStack{
-                        Text("Rolls:")
-                            .bold()
-                        List{
-                            ForEach(Array(log.enumerated()), id: \.0){ index, l in
-                                if !shownTotal {
-                                    Text("Attacker had \(l.attackerTroops)")
-                                    Text("Defender had \(l.defenderTroops)")
-                                        .onAppear{
-                                            shownTotal = true
-                                        }
+                                HStack{
+                                    Spacer()
+                                    VStack{
+                                        Text("Attacker")
+                                        TextField("Troop Count", value: $attackerTroops, format: .number, prompt: Text("9"))
+                                            .font(.system(size: 40))
+                                            .bold()
+                                            .focused($isInputActive)
+                                            .keyboardType(.numberPad)
+                                    }
+                                    .foregroundStyle(.red)
+                                    Spacer()
+                                    VStack{
+                                        Text("Defender")
+                                        TextField("Troop Count", value: $defenderTroops, format: .number, prompt: Text("4"))
+                                            .font(.system(size: 40))
+                                            .bold()
+                                            .focused($isInputActive)
+                                            .keyboardType(.numberPad)
+                                    }
+                                    .foregroundStyle(.blue)
+                                    Spacer()
                                 }
-                                VStack{
-                                    HStack{
-                                        Text("Roll \(index + 1): ")
-                                        Spacer()
+                                .multilineTextAlignment(.center)
+                                Button("Roll"){
+                                    rolling = true
+                                    ComputeRoll()
+                                }.buttonStyle(.borderedProminent)
+                                    .disabled(attackerTroops == 0 || defenderTroops == 0)
+                            }
+                            Spacer()
+                        }
+                        if winner != nil {
+                            VStack{
+                                Text("Results:")
+                                    .bold()
+                                HStack{
+                                    Spacer()
+                                    VStack{
+                                        Text("Winner")
+                                        Text(winner ?? "Undecided")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                    }
+                                    Spacer()
+                                    VStack{
+                                        Text("Troops Left")
+                                        Text("\(winner == "Attacker" ? attackerTroops : defenderTroops)")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                    }
+                                    Spacer()
+                                }
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(textColor(p: winner ?? "Attacker"))
+                            }
+                            if winner == "Defender" {
+                                Text("* Attacker still has 1 troop left")
+                            }
+                            Button("New Attack"){
+                                rolling = false
+                                attackerTroops = 0
+                                defenderTroops = 0
+                                winner = nil
+                                shownTotal = false
+                            }.buttonStyle(.borderedProminent)
+                            Spacer()
+                            VStack{
+                                Text("Dice Rolls:")
+                                    .bold()
+                                List{
+                                    ForEach(Array(log.enumerated()), id: \.0){ index, l in
+                                        if !shownTotal {
+                                            Text("Attacker had \(l.attackerTroops)")
+                                            Text("Defender had \(l.defenderTroops)")
+                                                .onAppear{
+                                                    shownTotal = true
+                                                }
+                                        }
                                         VStack{
                                             HStack{
-                                                Dice(num: l.attackerRoll[0], colour: Color.red)
-                                                if l.attackerRoll.count >= 2 {
-                                                    Dice(num: l.attackerRoll[1], colour: Color.red)
-                                                    if l.attackerRoll.count >= 3 {
-                                                        Dice(num: l.attackerRoll[2], colour: Color.red)
+                                                Text("Roll \(index + 1): ")
+                                                Spacer()
+                                                VStack{
+                                                    HStack{
+                                                        Dice(num: l.attackerRoll[0], colour: Color.red)
+                                                        if l.attackerRoll.count >= 2 {
+                                                            Dice(num: l.attackerRoll[1], colour: Color.red)
+                                                            if l.attackerRoll.count >= 3 {
+                                                                Dice(num: l.attackerRoll[2], colour: Color.red)
+                                                            }
+                                                        }
                                                     }
+                                                    .font(.system(size: 20))
+                                                    HStack{
+                                                        Dice(num: l.defenderRoll[0], colour: Color.blue)
+                                                        if l.defenderRoll.count == 2 {
+                                                            Dice(num: l.defenderRoll[1], colour: Color.blue)
+                                                        }
+                                                    }
+                                                    .font(.system(size: 20))
                                                 }
                                             }
-                                            .font(.system(size: 20))
                                             HStack{
-                                                Dice(num: l.defenderRoll[0], colour: Color.blue)
-                                                if l.defenderRoll.count == 2 {
-                                                    Dice(num: l.defenderRoll[1], colour: Color.blue)
-                                                }
+                                                Text("Attacker Lost \(l.attackerLost) And ")
+                                                Text("Defender Lost \(l.defenderLost)")
                                             }
-                                            .font(.system(size: 20))
                                         }
-                                    }
-                                    HStack{
-                                        Text("Attacker Lost \(l.attackerLost) And ")
-                                        Text("Defender Lost \(l.defenderLost)")
-                                    }
+                                    }.listRowBackground(Color(red: 1, green: 1, blue: 1, opacity: 0.5))
                                 }
-                            }
+                                .background(Color(red: 0, green: 0, blue: 0, opacity: 0))
+                                .scrollContentBackground(.hidden)
+                            }.padding(.top)
+                            Spacer()
                         }
-                    }.padding(.top)
-                    Spacer()
+                    }
+                    .background(Color(red: 1, green: 1, blue: 1, opacity: 0.4))
                 }
-            }
-            .fullScreenCover(isPresented: $rolling, content: {RollView()})
-            .navigationTitle("Risk Roller")
+                .fullScreenCover(isPresented: $rolling, content: {RollView()})
+                .navigationTitle("Risk Roller")
         }
     }
     
@@ -161,7 +169,7 @@ struct ContentView:View {
             return Color.blue
         }
     }
-                                 
+    
     func ComputeRoll() {
         let defenderStart = defenderTroops
         let attackerStart = attackerTroops
@@ -187,7 +195,7 @@ struct ContentView:View {
             let newLog = RollLog(attackerTroops: attackerStart, defenderTroops: defenderStart, attackerRoll: aRoll, defenderRoll: dRoll, attackerLost: (attackerStart - attackerTroops), defenderLost: (defenderStart - defenderTroops))
             
             log.append(newLog)
-
+            
             if defenderTroops <= 0 {
                 winner = "Attacker"
             } else if attackerTroops <= 1{
