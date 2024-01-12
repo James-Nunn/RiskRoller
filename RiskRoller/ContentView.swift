@@ -21,13 +21,11 @@ struct ContentView:View {
     
     @State var attackerTroops = 0
     @State var defenderTroops = 0
-    @FocusState var isInputActive: Bool
-    
     @State var rolling = false
-    
     @State var winner: String?
     @State var log: [RollLog] = []
     @State var shownTotal = false
+    @FocusState var isInputActive: Bool
     
     
     var body: some View{
