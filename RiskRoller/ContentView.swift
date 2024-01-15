@@ -26,7 +26,7 @@ struct ContentView:View {
     @State var log: [RollLog] = []
     @State var shownTotal = false
     @FocusState var isInputActive: Bool
-    
+    @State var rollAmount = 1
     
     var body: some View{
         NavigationStack{
@@ -68,11 +68,46 @@ struct ContentView:View {
                                     ComputeRoll()
                                 }.buttonStyle(.borderedProminent)
                                     .disabled(attackerTroops == 0 || defenderTroops == 0)
+                                
+                                VStack{
+                                    Text("Amount of Rolls:")
+                                    Picker("Roll Amount", selection: $rollAmount) {
+                                        Text("1").tag(1)
+                                        Text("5").tag(5)
+                                        Text("10").tag(10)
+                                        Text("All").tag(Int.max)
+                                    }.pickerStyle(.segmented)
+                                }.padding()
                             }
                             Spacer()
                         }
                         if winner != nil {
                             VStack{
+                                Text("Troop Count: ")
+                                    .bold()
+                                
+                                HStack{
+                                    Spacer()
+                                    VStack{
+                                        Text("Attacker")
+                                        Text("\(log[0].attackerTroops)")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                    }
+                                    .foregroundStyle(.red)
+                                    Spacer()
+                                    VStack{
+                                        Text("Defender")
+                                        Text("\(log[0].defenderTroops)")
+                                            .font(.system(size: 40))
+                                            .bold()
+                                    }
+                                    .foregroundStyle(.blue)
+                                    Spacer()
+                                }
+                                .multilineTextAlignment(.center)
+                                
+                                
                                 Text("Results:")
                                     .bold()
                                 HStack{
@@ -86,9 +121,20 @@ struct ContentView:View {
                                     Spacer()
                                     VStack{
                                         Text("Troops Left")
-                                        Text("\(winner == "Attacker" ? attackerTroops : defenderTroops)")
-                                            .font(.system(size: 40))
-                                            .bold()
+                                        HStack{
+                                            if winner == "Attacker" {
+                                                Text("\(attackerTroops)")
+                                            } else if winner == "Defender" {
+                                                Text("\(defenderTroops)")
+                                            } else if winner == "Both"{
+                                                Text("\(attackerTroops)")
+                                                    .foregroundStyle(Color.red)
+                                                Text("\(defenderTroops)")
+                                                    .foregroundStyle(Color.blue)
+                                            }
+                                        }
+                                        .font(.system(size: 40))
+                                        .bold()
                                     }
                                     Spacer()
                                 }
@@ -104,6 +150,7 @@ struct ContentView:View {
                                 defenderTroops = 0
                                 winner = nil
                                 shownTotal = false
+                                log = []
                             }.buttonStyle(.borderedProminent)
                             Spacer()
                             VStack{
@@ -143,7 +190,7 @@ struct ContentView:View {
                                                 }
                                             }
                                             HStack{
-                                                Text("Attacker Lost \(l.attackerLost) And ")
+                                                Text("Attacker Lost \(l.attackerLost) And")
                                                 Text("Defender Lost \(l.defenderLost)")
                                             }
                                         }
@@ -165,16 +212,19 @@ struct ContentView:View {
     func textColor(p: String) -> Color {
         if p == "Attacker"{
             return Color.red
-        } else {
+        } else if p == "Defender" {
             return Color.blue
+        } else {
+            return Color.black
         }
     }
     
     func ComputeRoll() {
         let defenderStart = defenderTroops
         let attackerStart = attackerTroops
+        var localRollAmount = 0
         
-        while winner == nil  {
+        while winner == nil {
             let aRoll = attackerRoll()
             let dRoll = defenderRoll()
             
@@ -192,14 +242,20 @@ struct ContentView:View {
                 }
             }
             
+            localRollAmount += 1
+            
             let newLog = RollLog(attackerTroops: attackerStart, defenderTroops: defenderStart, attackerRoll: aRoll, defenderRoll: dRoll, attackerLost: (attackerStart - attackerTroops), defenderLost: (defenderStart - defenderTroops))
             
             log.append(newLog)
             
             if defenderTroops <= 0 {
                 winner = "Attacker"
+                return
             } else if attackerTroops <= 1{
                 winner = "Defender"
+                return
+            } else if localRollAmount == rollAmount {
+                winner = "Both"
             }
         }
         
